@@ -110,9 +110,9 @@
   {:pre [(keyword? engine)
          (is-engine? engine)
          (map? details-map)]}
-  (let [{:keys [can-connect? humanize-connection-error-message]} (engine->driver engine)]
+  (let [{:keys [humanize-connection-error-message], :as driver} (engine->driver engine)]
     (try
-      (can-connect? details-map)
+      ((:can-connect? driver) details-map)
       (catch Throwable e
         (log/error "Failed to connect to database:" (.getMessage e))
         (when rethrow-exceptions
